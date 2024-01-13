@@ -53,8 +53,9 @@ def create_cards(categories):
     
     for category in categories:
         data = fetch_data(category)
-        st.markdown(f"<button class='card' onclick='buttonClick(\"{category.capitalize()}\")'>{category.capitalize()}</button>", unsafe_allow_html=True)
-        display_suggestions(category, data)
+        button_clicked = st.button(category.capitalize())
+        if button_clicked:
+            display_suggestions(category, data)
 
     st.markdown("</div>", unsafe_allow_html=True)
 
