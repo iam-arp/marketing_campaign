@@ -43,9 +43,9 @@ def display_suggestions(category, data):
         if category.lower() == 'retention':
             last_visit_date = datetime.datetime.strptime(value, "%Y-%m-%d").date()
             days_since_last_visit = calculate_days_since_last_visit(last_visit_date)
-            st.button(f"{key} - Last Visit: {last_visit_date.strftime('%Y-%m-%d')}, Days Since Last Visit: {days_since_last_visit}", class_="suggestion-button slide-in")
+            st.button(f"{key} - Last Visit: {last_visit_date.strftime('%Y-%m-%d')}, Days Since Last Visit: {days_since_last_visit}", key=f"{category.lower()}_{key}", style="background-color: var(--card-bg-color); color: var(--button-text-color); padding: 10px 20px; margin: 5px; font-size: 1em; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;")
         else:
-            st.button(f"{key} - {value}", class_="suggestion-button slide-in")
+            st.button(f"{key} - {value}", key=f"{category.lower()}_{key}", style="background-color: var(--card-bg-color); color: var(--button-text-color); padding: 10px 20px; margin: 5px; font-size: 1em; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;")
 
 # Function to create clickable cards
 def create_cards(categories):
@@ -53,7 +53,7 @@ def create_cards(categories):
     
     for category in categories:
         data = fetch_data(category)
-        if st.button(category.capitalize(), class_="card"):
+        if st.button(category.capitalize(), key=f"{category.lower()}_button", style="background-color: var(--card-bg-color); color: var(--button-text-color); padding: 20px; text-align: center; font-size: 1.5em; border-radius: 10px; cursor: pointer; transition: background-color 0.3s;"):
             display_suggestions(category, data)
 
     st.markdown("</div>", unsafe_allow_html=True)
