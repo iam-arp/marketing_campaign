@@ -37,14 +37,20 @@ custom_css = """
         margin-bottom: 30px;
     }
 
+    .card-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
     .card {
+        position: relative;
         background-color: #3498db;
         color: #ffffff;
         padding: 20px;
         text-align: center;
         font-size: 1.5em;
         border-radius: 10px;
-        margin-bottom: 20px;
         cursor: pointer;
         transition: background-color 0.3s;
     }
@@ -57,9 +63,11 @@ custom_css = """
         text-align: center;
         font-size: 1.2em;
         margin-top: 20px;
+        display: none;
     }
 
     .suggestion-button {
+        display: none;
         background-color: #3498db;
         color: #ffffff;
         padding: 10px 20px;
@@ -74,6 +82,21 @@ custom_css = """
     .suggestion-button:hover {
         background-color: #2980b9;
     }
+
+    .slide-in {
+        animation: slideIn 0.5s forwards;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
 </style>
 """
 
@@ -81,7 +104,7 @@ custom_css = """
 st.markdown(custom_css, unsafe_allow_html=True)
 
 def display_occasions_suggestions():
-    st.markdown("<div class='suggestions'>Occasions Suggestions:</div>", unsafe_allow_html=True)
+    st.markdown("<div class='suggestions slide-in' id='occasions'>Occasions Suggestions:</div>", unsafe_allow_html=True)
     occasions_suggestions = {
         "Dashara": "2024-10-10",
         "Diwali": "2024-11-04",
@@ -90,20 +113,20 @@ def display_occasions_suggestions():
     }
     for occasion, date_str in occasions_suggestions.items():
         date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
-        st.button(f"{occasion} - {date.strftime('%Y-%m-%d')}", class="suggestion-button")
+        st.button(f"{occasion} - {date.strftime('%Y-%m-%d')}", class="suggestion-button slide-in")
 
 def display_deadstock_suggestions():
-    st.markdown("<div class='suggestions'>Deadstock Suggestions:</div>", unsafe_allow_html=True)
+    st.markdown("<div class='suggestions slide-in' id='deadstock'>Deadstock Suggestions:</div>", unsafe_allow_html=True)
     deadstock_suggestions = {
         "Kurta": 50,
         "Sherwani": 30,
         "Tuxido": 20
     }
     for item, stock in deadstock_suggestions.items():
-        st.button(f"{item} - Stock: {stock}", class="suggestion-button")
+        st.button(f"{item} - Stock: {stock}", class="suggestion-button slide-in")
 
 def display_retention_suggestions():
-    st.markdown("<div class='suggestions'>Retention Suggestions:</div>", unsafe_allow_html=True)
+    st.markdown("<div class='suggestions slide-in' id='retention'>Retention Suggestions:</div>", unsafe_allow_html=True)
     retention_suggestions = {
         "Dewansh Assawa": "2024-01-01",
         "Rakesh": "2024-02-15",
@@ -112,13 +135,14 @@ def display_retention_suggestions():
     for customer, last_visit_date_str in retention_suggestions.items():
         last_visit_date = datetime.datetime.strptime(last_visit_date_str, "%Y-%m-%d").date()
         days_since_last_visit = calculate_days_since_last_visit(last_visit_date)
-        st.button(f"{customer} - Last Visit: {last_visit_date.strftime('%Y-%m-%d')}, Days Since Last Visit: {days_since_last_visit}", class="suggestion-button")
+        st.button(f"{customer} - Last Visit: {last_visit_date.strftime('%Y-%m-%d')}, Days Since Last Visit: {days_since_last_visit}", class="suggestion-button slide-in")
 
 def main():
     st.markdown("<div class='container'>", unsafe_allow_html=True)
     st.markdown("<div class='header'>Smart Marketing Campaign</div>", unsafe_allow_html=True)
 
     # Create clickable square cards
+    st.markdown("<div class='card-container'>", unsafe_allow_html=True)
     if st.button("Occasions", class="card"):
         display_occasions_suggestions()
 
@@ -127,6 +151,7 @@ def main():
 
     if st.button("Retention", class="card"):
         display_retention_suggestions()
+    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
 
